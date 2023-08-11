@@ -104,7 +104,7 @@ div.cat-info div {
   bottom: -5px;
   background: linear-gradient(#ff3d00 100%, transparent 0) no-repeat;
   background-size: 0% auto;
-  animation: 3300ms lineGrow linear infinite;
+  animation: 2000ms lineGrow linear infinite;
 }
 
 @keyframes lineGrow {

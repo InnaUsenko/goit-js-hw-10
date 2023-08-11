@@ -1,6 +1,7 @@
 import { fetchBreeds } from './cat-api.js';
 import { fetchCatByBreed } from './cat-api.js';
 import Notiflix from 'notiflix';
+import anyCatImg from '../img/any_cat.webp';
 
 const catSelector = document.querySelector('.breed-select');
 const catLoader = document.querySelector('.loader');
@@ -32,17 +33,22 @@ catSelector.addEventListener('change', event => {
   catLoader.classList.toggle('hiden-selector');
   const pict = catPromice
     .then(kitty => {
-      setTimeout(() => {
-        if (kitty.length > 0 && theCat) {
-          catInfo.innerHTML = CreatePictures(kitty) + ' ' + CreateInfo(theCat);
-        }
-        catSelector.disabled = false;
-        catLoader.classList.toggle('hiden-selector');
-        catInfo.classList.toggle('hiden-selector');
-      }, 3000);
+      if (kitty.length > 0 && theCat) {
+        catInfo.innerHTML = CreatePictures(kitty) + CreateInfo(theCat);
+      } else if (kitty.length === 0 && theCat) {
+        catInfo.innerHTML =
+          `<img src=${anyCatImg} alt="photo does not exist">` +
+          CreateInfo(theCat);
+      } else {
+        catInfo.innerHTML = '';
+        Notiflix.Notify.failure(`Sorry, somethink went wrong.`);
+      }
+      catSelector.disabled = false;
+      catLoader.classList.toggle('hiden-selector');
+      catInfo.classList.toggle('hiden-selector');
     })
     .catch(error => {
-      Notiflix.Notify.failure(`❌ ${error}`);
+      Notiflix.Notify.failure(`${error}`);
       catLoader.classList.add('hiden-selector');
       catInfo.classList.add('hiden-selector');
       catError.classList.toggle('hiden-selector');
