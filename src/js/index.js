@@ -8,6 +8,7 @@ const catError = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
 
 let cats = [];
+catSelector.selectedIndex = -1;
 
 let catsPromice = new fetchBreeds();
 catsPromice
@@ -38,7 +39,7 @@ catSelector.addEventListener('change', event => {
         catSelector.disabled = false;
         catLoader.classList.toggle('hiden-selector');
         catInfo.classList.toggle('hiden-selector');
-      }, 4000);
+      }, 3000);
     })
     .catch(error => {
       Notiflix.Notify.failure(`❌ ${error}`);
@@ -49,11 +50,14 @@ catSelector.addEventListener('change', event => {
 });
 
 function FillSelector(objList) {
-  return objList
-    .map(obj => {
-      return `<option value=${obj.id}>${obj.name}</option>`;
-    })
-    .join('');
+  return (
+    "<option style='display:none;'></option>" +
+    objList
+      .map(obj => {
+        return `<option value=${obj.id}>${obj.name}</option>`;
+      })
+      .join('')
+  );
 }
 
 function CreatePictures(objList) {
