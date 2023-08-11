@@ -1,10 +1,11 @@
+import { fetchBreeds } from './cat-api.js';
+import { fetchCatByBreed } from './cat-api.js';
+import Notiflix from 'notiflix';
+
 const catSelector = document.querySelector('.breed-select');
 const catLoader = document.querySelector('.loader');
 const catError = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
-
-import { fetchBreeds } from './cat-api.js';
-import { fetchCatByBreed } from './cat-api.js';
 
 let cats = [];
 
@@ -15,7 +16,7 @@ catsPromice
     cats = kitty;
   })
   .catch(error => {
-    console.log(error);
+    Notiflix.Notify.failure(`${error}`);
     catLoader.classList.add('hiden-selector');
     catInfo.classList.add('hiden-selector');
     catError.classList.toggle('hiden-selector');
@@ -37,10 +38,10 @@ catSelector.addEventListener('change', event => {
         catSelector.disabled = false;
         catLoader.classList.toggle('hiden-selector');
         catInfo.classList.toggle('hiden-selector');
-      }, 1000);
+      }, 4000);
     })
     .catch(error => {
-      console.log(error);
+      Notiflix.Notify.failure(`❌ ${error}`);
       catLoader.classList.add('hiden-selector');
       catInfo.classList.add('hiden-selector');
       catError.classList.toggle('hiden-selector');
