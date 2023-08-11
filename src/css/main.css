@@ -1,0 +1,24 @@
+.breed-select {
+  margin-bottom: 20px;
+}
+
+div.cat-info {
+  display: flex;
+  gap: 10px;
+}
+
+div.cat-info h2 {
+  margin-top: 0;
+}
+
+div.cat-info img {
+  width: 320px;
+}
+
+div.cat-info div {
+  width: 320px;
+}
+
+.hiden-selector {
+  display: none !important;
+}

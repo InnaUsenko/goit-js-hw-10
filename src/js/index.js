@@ -1,6 +1,8 @@
 const catSelector = document.querySelector('.breed-select');
 const catLoader = document.querySelector('.loader');
 const catError = document.querySelector('.error');
+const catInfo = document.querySelector('.cat-info');
+
 import { fetchBreeds } from './cat-api.js';
 import { fetchCatByBreed } from './cat-api.js';
 
@@ -14,31 +16,34 @@ catsPromice
   })
   .catch(error => {
     console.log(error);
-    catError.innerHTML = 'ERROR: ' + error;
+    catLoader.classList.add('hiden-selector');
+    catInfo.classList.add('hiden-selector');
+    catError.classList.toggle('hiden-selector');
   });
 
 catSelector.addEventListener('change', event => {
-  //let options = catSelector.querySelectorAll('option');
   const option = event.currentTarget.value;
+  catSelector.disabled = true;
   const catPromice = fetchCatByBreed(option);
-  const catInfo = cats.find(cat => cat.id === option);
-  console.log('cats: ' + cats.length);
+  const theCat = cats.find(cat => cat.id === option);
+  catInfo.classList.toggle('hiden-selector');
+  catLoader.classList.toggle('hiden-selector');
   const pict = catPromice
     .then(kitty => {
-      if (kitty.length > 0) {
-        catLoader.insertAdjacentHTML('afterbegin', CreatePictures(kitty));
-        console.log(kitty);
-        if (catInfo) {
-          catLoader.insertAdjacentHTML(
-            'beforeend',
-            `<h2>${catInfo.name}</h2><p>${catInfo.description}</p><p><b>Temperament:</b>${catInfo.temperament}</p>`
-          );
+      setTimeout(() => {
+        if (kitty.length > 0 && theCat) {
+          catInfo.innerHTML = CreatePictures(kitty) + ' ' + CreateInfo(theCat);
         }
-      }
+        catSelector.disabled = false;
+        catLoader.classList.toggle('hiden-selector');
+        catInfo.classList.toggle('hiden-selector');
+      }, 1000);
     })
     .catch(error => {
       console.log(error);
-      catError.innerHTML('ERROR: ' + error);
+      catLoader.classList.add('hiden-selector');
+      catInfo.classList.add('hiden-selector');
+      catError.classList.toggle('hiden-selector');
     });
 });
 
@@ -53,7 +58,11 @@ function FillSelector(objList) {
 function CreatePictures(objList) {
   return objList
     .map(obj => {
-      return `<img src=${obj.url} alt=${obj.id} width=320px/>`;
+      return `<img src=${obj.url} alt=${obj.id}/>`;
     })
     .join('');
+}
+
+function CreateInfo(theCat) {
+  return `<div><h2>${theCat.name}</h2><p>${theCat.description}</p><p><b>Temperament: </b>${theCat.temperament}</p></div>`;
 }
